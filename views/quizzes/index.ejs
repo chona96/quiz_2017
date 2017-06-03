@@ -20,6 +20,7 @@
         <td colspan="2">
             <small> (by <%= quiz.Author ? quiz.Author.username : "Anómino" %>) </small>
         </td>
+        </td>
 
         <% if (session.user) { %>
             <% if (session.user.isAdmin || session.user.id === quiz.AuthorId) { %>
