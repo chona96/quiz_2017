@@ -32,8 +32,9 @@ exports.adminOrAuthorRequired = function(req, res, next){
 
     var isAdmin  = req.session.user.isAdmin;
     var isAuthor = req.quiz.AuthorId === req.session.user.id;
+    var isTipAuthor= req.tip.AuthorId=== req.session.user.id;
 
-    if (isAdmin || isAuthor) {
+    if (isAdmin || isAuthor || isTipAuthor) {//añadimos a la or que si eres el autor de la tip también estas autorizado
         next();
     } else {
         console.log('Operación prohibida: El usuario logeado no es el autor del quiz, ni un administrador.');
