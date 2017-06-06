@@ -285,6 +285,7 @@ exports.random_check = function (req, res, next) {
    	 var answer = req.query.answer || "";
   	 var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
+
     if(result){
 
             score=++req.session.score;
@@ -296,6 +297,8 @@ exports.random_check = function (req, res, next) {
                  result: result,
                  answer: answer,
                  score:score
-    });
+
+
+            });
 };
 
