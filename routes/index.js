@@ -155,9 +155,9 @@ router.get('/quizzes/randomcheck/:quizId?',  quizController.random_check);
 
 
 
-===
+
 router.get('/help', function(req,res,next){
 	res.render('ayuda');
 });
->>>>
+
 module.exports = router;
