@@ -13,6 +13,7 @@ router.get('/author', function(req, res, next) {
     res.render('author');
 });
 
+
 // Pagina de jugar
 //router.get('/quizzes/randomcheck/:quizId?answer=respuesta', function(req, res, next) {
   //  res.render('random_play');
@@ -38,5 +39,10 @@ router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 router.get('/quizzes/randomplay',  quizController.random_play);
 router.get('/quizzes/randomcheck/:quizId?',  quizController.random_check);
 
+
+
+router.get('/help', function(req,res,next){
+	res.render('ayuda');
+});
 
 module.exports = router;
