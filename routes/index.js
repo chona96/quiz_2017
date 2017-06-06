@@ -45,6 +45,7 @@ router.get('/', function (req, res, next) {
 router.get('/author', function (req, res, next) {
     res.render('author');
 });
+<<<<<<< HEAD
 
 // Pagina de jugar
 //router.get('/quizzes/randomcheck/:quizId?answer=respuesta', function(req, res, next) {
@@ -154,4 +155,9 @@ router.get('/quizzes/randomcheck/:quizId?',  quizController.random_check);
 
 
 
+===
+router.get('/help', function(req,res,next){
+	res.render('ayuda');
+});
+>>>>
 module.exports = router;
