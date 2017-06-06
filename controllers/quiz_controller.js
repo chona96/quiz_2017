@@ -289,8 +289,8 @@ exports.random_check = function (req, res, next) {
          res.render('quizzes/random_result', {
         
         result: result,
-       answer: answer,
-	score:score
+         answer: answer,
+	    score:score
     });
 };
 
