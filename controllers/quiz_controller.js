@@ -214,43 +214,44 @@ exports.play = function (req, res, next) {
 // GET /quizzes/random_play
 exports.random_play = function (req, res, next) {
 
-if(!req.session.score) req.session.score=0;
-if(!req.session.questions) req.session.questions=[-1];
-var answer = req.query.answer || '';
+    if(!req.session.score) req.session.score=0;
+    if(!req.session.questions) req.session.questions=[-1];
+    var answer = req.query.answer || '';
 
-models.Quiz.count()
-	.then(function (count){
+    models.Quiz.count().then(function (count){
 
 		var  findOptions={where:{'id': {$notIn: req.session.questions}}}; 
 
-return models.Quiz.findAll(findOptions);
-})
-.then(function (quizzes) {
+    return models.Quiz.findAll(findOptions);
+	}).then(function (quizzes) {
 
-      if (quizzes.length !== 0) {
-
-
-	var  quizzz=quizzes[parseInt(Math.round(Math.random() * (quizzes.length)))];
-
-              if(quizzz){
-			 req.quiz = quizzz;
-			res.render('quizzes/random_play', {
-        		quiz: req.quiz,
-       			 answer: answer,
-       			 score: req.session.score
-			});
-}
-	}else{
-score=req.session.score;
-req.session.score=0;
- req.session.questions=[-1];
- 	res.render('quizzes/random_nomore', {
-        score: score
-	 });
+        if (quizzes.length !== 0) {
 
 
+        var  quizzz=quizzes[parseInt(Math.round(Math.random() * (quizzes.length)))];
 
-	}
+        if(quizzz){
+
+                req.quiz = quizzz;
+
+                res.render('quizzes/random_play', {
+                        quiz: req.quiz,
+                        answer: answer,
+                        score: req.session.score
+                });
+    }
+        }else{
+                score=req.session.score;
+                req.session.score=0;
+                req.session.questions=[-1];
+
+                res.render('quizzes/random_nomore', {
+                    score: score
+                 });
+
+
+
+        }
 })
     .catch(function (error) {
         next(error);
@@ -274,23 +275,27 @@ exports.check = function (req, res, next) {
 
 // GET /quizzes/:quizId/check
 exports.random_check = function (req, res, next) {
+
 	if(!req.session.score) req.session.score=0;
-	var score=req.session.score;
-	 req.session.questions.push(req.quiz.id);
+
+    var score=req.session.score;
+
+    req.session.questions.push(req.quiz.id);
 
    	 var answer = req.query.answer || "";
   	 var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
-	if(result){
-	    score=++req.session.score;
-	}else{
-		req.session.score=0;
-		req.session.questions=[-1];
-	}
-         res.render('quizzes/random_result', {
-        
-        result: result,
-         answer: answer,
-	    score:score
+
+    if(result){
+
+            score=++req.session.score;
+    }else{
+            req.session.score=0;
+            req.session.questions=[-1];
+        }
+             res.render('quizzes/random_result', {
+                 result: result,
+                 answer: answer,
+                 score:score
     });
 };
 
