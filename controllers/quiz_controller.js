@@ -242,7 +242,7 @@ exports.random_check = function (req, res, next) {
    	 var answer = req.query.answer || "";
   	 var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 	if(result){
-		req.session.score++;
+		score=++req.session.score;
 	}else{
 		req.session.score=0;
 		req.session.questions=[-1];
