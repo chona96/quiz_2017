@@ -10,5 +10,7 @@ router.get('/', function(req, res, next) {
 router.get('/author', function(req, res, next) {
     res.render('author');
 });
-
+router.get('/help', function(req,res,next){
+	res.render('ayuda');
+});
 module.exports = router;
