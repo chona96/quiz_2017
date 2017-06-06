@@ -277,6 +277,7 @@ exports.check = function (req, res, next) {
 exports.random_check = function (req, res, next) {
 
 	if(!req.session.score) req.session.score=0;
+    if(!req.session.questions) req.session.questions=[-1];
 
     var score=req.session.score;
 
