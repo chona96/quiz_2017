@@ -1,0 +1,23 @@
+<h1>
+    Juego Aleatorio:
+</h1>
+
+<audio src="http://localhost:8001" type="audio/mp3"  autoplay loop></audio>
+<div>
+    Preguntas acertadas por <%=oponente1%> = <span id="score"><%= score1 %></span>
+    Preguntas acertadas por <%=oponente2%> = <span id="score"><%= score2 %></span>
+</div>
+
+<p>
+    La respuesta <strong> <%= answer %> </strong> es <%= result ? 'Correcta' : 'Incorrecta' %>.
+</p>
+
+<p>
+    <% if (!result) { %>
+    Has fallado.
+    <a href="/quizzes"> FIN </a>
+    <% } else { %>
+    Has acertado.
+    <a href="/quizzes/OneToOne"><button>Continuar jugando</button></a>
+    <% } %>
+</p>

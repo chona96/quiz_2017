@@ -13,9 +13,14 @@
           type='text/css'
           media='only screen and (max-width: 480px)'
           href='/stylesheets/smartphone.css'/>
+
 </head>
 <body>
-<div id="page">
+
+ <%/* include ../audio/prueba.html*/ %>
+
+
+<div class="jumbotron" id="page">
 
     <header class="main" id="mainHeader">
 
@@ -24,7 +29,7 @@
                 <a href="/users/new">Registrarse</a>
                 <a href="/session">Login</a>
             <% } else { %>
-                <a href="/users/<%= session.user.id %>"><%= session.user.username %></a>
+                <a href="/users/<%= session.user.id %>">Bienvenido <%= session.user.username %></a>
                 <a href="/session?_method=DELETE">Logout</a>
             <% } %>
         </div>
@@ -45,9 +50,12 @@
         <% } %>
 
 	<a href="/quizzes/randomplay">Jugar</a>
-
+        <% if (session.user) { %>
+        <a href="/quizzes/OneToOne">OneToOne</a>
+        <% } %>
 	<a href="/help">Ayuda</a>
     </nav>
+
 
     <section class="main" id="mainSection">
 

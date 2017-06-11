@@ -14,15 +14,14 @@ exports.load = function (req, res, next, quizId) {
         ]
     })
     .then(function (quiz) {
-        if (quiz) {
-            req.quiz = quiz;
-            next();
-        } else {
-            throw new Error('No existe ningún quiz con id=' + quizId);
-        }
-    })
-    .catch(function (error) {
-        next(error);
+                     if (quiz) {
+                        req.quiz = quiz;
+                        next();
+                      } else {
+                    throw new Error('No existe ningún quiz con id=' + quizId);
+                }
+    }).catch(function (error) {
+                next(error);
     });
 };
 
@@ -217,10 +216,12 @@ exports.random_play = function (req, res, next) {
     if(!req.session.score) req.session.score=0;
     if(!req.session.questions) req.session.questions=[-1];
     var answer = req.query.answer || '';
-
+    var preguntas;
+    var tiempo;
     models.Quiz.count().then(function (count){
 
-		var  findOptions={where:{'id': {$notIn: req.session.questions}}}; 
+		var  findOptions={where:{'id': {$notIn: req.session.questions}}};
+		 preguntas=count;
 
     return models.Quiz.findAll(findOptions);
 	}).then(function (quizzes) {
@@ -228,18 +229,22 @@ exports.random_play = function (req, res, next) {
         if (quizzes.length !== 0) {
 
 
-        var  quizzz=quizzes[parseInt(Math.round(Math.random() * (quizzes.length)))];
+            var  quizzz=quizzes[parseInt(Math.round(Math.random() * (quizzes.length)))];
 
-        if(quizzz){
+            if(quizzz ) {
 
                 req.quiz = quizzz;
 
-                res.render('quizzes/random_play', {
+                    res.render('quizzes/random_play', {
                         quiz: req.quiz,
                         answer: answer,
-                        score: req.session.score
-                });
-    }
+                        score: req.session.score,
+                        question: preguntas + 1 - req.session.questions.length
+
+                    });
+
+            }
+
         }else{
                 score=req.session.score;
                 req.session.score=0;
@@ -249,8 +254,6 @@ exports.random_play = function (req, res, next) {
                     score: score
                  });
 
-
-
         }
 })
     .catch(function (error) {
@@ -258,6 +261,130 @@ exports.random_play = function (req, res, next) {
     });
 };
 
+// GET /quizzes/random_play
+exports.random_vs = function (req, res, next) {
+
+    if(!req.session.score1) req.session.score1=0;
+    if(!req.session.score2) req.session.score2=0;
+    if(!req.session.questions) req.session.questions=[-1];
+    if(!req.session.oponentes) req.session.oponentes=[-1];
+    if(!req.session.oponente1 && !req.session.oponente2){
+
+        var  findOptions1={where:{'id': {$notIn: req.session.oponentes}}};
+
+            models.User.findAll(findOptions1).then(function (usuarios) {
+
+                if (usuarios.length >= 2) {
+
+                    oponente1 = usuarios[parseInt(Math.round(Math.random() * (usuarios.length)))];
+                    oponente2 = usuarios[parseInt(Math.round(Math.random() * (usuarios.length)))];
+
+                    while(oponente1.username===oponente2.username){
+                        oponente2 = usuarios[parseInt(Math.round(Math.random() * (usuarios.length)))];
+
+                    }
+
+
+                    if (oponente1 && oponente2) {
+                        req.session.oponente1=oponente1;
+                        req.session.oponente2=oponente2;
+                        req.session.oponentes.push(oponente1.id);
+                        req.session.oponentes.push(oponente2.id);
+
+                        if(!req.session.turno)req.session.turno=oponente1;
+
+                    } else {
+                        req.flash('error', "no hay usuarios");
+                    }
+                } else {
+                    req.flash('error', "no hay usuarios");
+                }
+
+            });
+
+
+    }
+
+
+
+    var answer = req.query.answer || '';
+    var score;
+
+  //  req.session.turno=models.User.findById(req.session.oponentes[parseInt(Math.round(Math.random() * (req.session.oponentes.length)))]);
+
+    models.Quiz.count().then(function (count){
+
+        var  findOptions={where:{'id': {$notIn: req.session.questions}}};
+        preguntas=count;
+
+        return models.Quiz.findAll(findOptions);
+    }).then(function (quizzes) {
+
+        if (quizzes.length !== 0) {
+
+
+            var  quizzz=quizzes[parseInt(Math.round(Math.random() * (quizzes.length)))];
+
+
+
+         var turnoo=((req.session.turno.username===req.session.oponente1.username) ? req.session.oponente1 : req.session.oponente2);
+         req.session.turno=turnoo;
+
+           // var turnoo=req.session.oponentes[parseInt(Math.round(Math.random() * (req.session.oponentes.length)))];
+
+            if(quizzz && oponente1 && oponente2 ) {
+
+                req.quiz = quizzz;
+
+
+                if(turnoo && turnoo.username === oponente1.username) {
+
+                    score =req.session.score1;
+
+                }  else if(turnoo && turnoo.username === oponente2.username){
+
+                    score = req.session.score2;
+
+                }
+
+                res.render('quizzes/random_OneToOne', {
+                    quiz: req.quiz,
+                    answer: answer,
+                    score: score,
+                    question: preguntas + 1 - req.session.questions.length,
+                    oponente1:oponente1.username,
+                    oponente2:oponente2.username,
+                    turno: req.session.turno.username
+                });
+
+            }
+
+        }else{
+            if(req.session.score1> req.session.score2) {
+
+                score=req.session.score1;
+                ganador=oponente1;
+
+            }  else{
+
+                score = req.session.score2;
+                ganador=oponente2;
+            }
+
+            req.session.score=0;
+            req.session.questions=[-1];
+
+            res.render('quizzes/random_no', {
+                score: score,
+                ganador: ganador
+            });
+
+        }
+    })
+        .catch(function (error) {
+            next(error);
+        });
+};
 
 // GET /quizzes/:quizId/check
 exports.check = function (req, res, next) {
@@ -298,8 +425,57 @@ exports.random_check = function (req, res, next) {
                  result: result,
                  answer: answer,
                  score:score
-
-
             });
+};
+
+// GET /quizzes/:quizId/check
+exports.OneTo_check = function (req, res, next) {
+
+    if(!req.session.score1) req.session.score1=0;
+    if(!req.session.score2) req.session.score2=0;
+    if(!req.session.turno) req.session.turno=req.session.oponente2;
+    if(!req.session.questions) req.session.questions=[-1];
+    if(!req.session.oponentes) req.session.oponentes=[-1];
+
+    var score1=req.session.score1;
+    var score2=req.session.score2;
+
+    req.session.questions.push(req.quiz.id);
+
+    var answer = req.query.answer || "";
+    var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
+
+
+    if(result && req.session.turno.username === req.session.oponente1.username) {
+
+        score1 = ++req.session.score1;
+        req.session.turno=req.session.oponente2;
+
+    }  else if(result && req.session.turno.username === req.session.oponente2.username){
+
+        score2 = ++req.session.score2;
+        req.session.turno=req.session.oponente1;
+
+    }else{
+        req.session.oponente1=false;
+        req.session.oponente2=false;
+        req.session.score1=0;
+        req.session.score2=0;
+        req.session.score=0;
+        req.session.questions=[-1];
+        req.session.oponentes=[-1];
+
+    }
+    res.render('quizzes/duelo', {
+        result: result,
+        answer: answer,
+        score1:score1,
+        score2:score2,
+        oponente1:req.session.oponente1.username,
+        oponente2:req.session.oponente2.username
+
+
+
+    });
 };
 

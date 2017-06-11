@@ -2,13 +2,27 @@
 body {
     font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin: 0;
+    border-radius: 15px;
+
+
+}
+.jumbotron{
+    border-radius: 5px;
+    padding: 20px;!important;
+   background-color: rgba(3, 169, 244, 0.24);
+   /* background-image: url("http://static5.depositphotos.com/1020804/463/i/950/depositphotos_4639172-stock-photo-image-of-background-in-the.jpg");*/
+
+    background-size: cover;
+}
+html{
+    background-size: cover;
+    background-image: url("http://www.smartblog.es/wp-content/uploads/2013/06/Cabecera-Trivial-Mobile.jpg");
 }
 
 #page {
     display: flex;
     flex-flow: row wrap;
-    margin: 2px auto;
-    padding: 0px;
+ 
 }
 
 .main {
@@ -16,7 +30,8 @@ body {
     border: 1px solid #999;
     padding: 2px;
     margin: 1px;
-    background: #eee;
+    border-radius: 5px;
+
 }
 
 #mainHeader {
@@ -45,7 +60,8 @@ body {
 }
 
 a {
-    color: #00B7FF;
+    color:black;
+    text-decoration: none;!important;
 }
 
 .right {

@@ -151,8 +151,9 @@ router.delete('/quizzes/:quizId(\\d+)',    quizController.destroy);
 router.get('/quizzes/:quizId(\\d+)/play',  quizController.play);
 router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 router.get('/quizzes/randomplay',  quizController.random_play);
+router.get('/quizzes/OneToOne',  quizController.random_vs);
 router.get('/quizzes/randomcheck/:quizId?',  quizController.random_check);
-
+router.get('/quizzes/OneTo_check/:quizId?',  quizController.OneTo_check);
 
 
 

@@ -1,11 +1,13 @@
 <h1>
-    Juego Aleatorio:
+    Juego Aleatorio (tienes 15 segundos):
 </h1>
 
 <div>
-    Preguntas acertadas = <span id="score"><%= score %></span>
+    Preguntas acertadas = <span id="score"><%=score%></span><br>
+    Preguntas por contestar aún= <span><%=question%></span>
 </div>
 
+<audio src="http://localhost:8002" type="audio/mp3"  autoplay loop></audio>
 <form method="get" action="/quizzes/randomcheck/<%= quiz.id %>">
 
     <p>
@@ -14,7 +16,23 @@
 
 
     <div class="wideRow">
+
         <input type="text" class="itemWide" id="answer" name="answer" value="" placeholder="Respuesta" autocomplete="off"/>
         <input type="submit" class="itemNarrow" id="send" value="Comprobar">
     </div>
 </form>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // indicamos que se ejecuta la función a los 5 segundos de haberse
+        // cargado la pagina
+        setTimeout(clickbutton,15000);
+
+        function clickbutton()
+        {
+            // simulamos el click del mouse en el boton del formulario
+            $("#send").click();
+        }
+    });
+</script>

@@ -1,0 +1,41 @@
+<h1>
+    Juego Aleatorio a 15 segundos entre <span><%= oponente1 %></span> y <span> <%= oponente2 %></span>:
+</h1>
+
+<div>
+    Preguntas acertadas por <%=turno%> = <span id="score"><%=score%></span><br>
+    Preguntas por contestar aún= <span><%=question%></span>
+    <audio src="http://localhost:8002" type="audio/mp3"  autoplay loop></audio>
+</div>
+
+
+<form method="get" action="/quizzes/OneTo_check/<%= quiz.id %>">
+
+    <p>
+        Turno de <b><%= turno %></b>
+        Pregunta: <b><%= quiz.question %></b>
+    </p>
+
+
+    <div class="wideRow">
+
+        <input type="text" class="itemWide" id="answer" name="answer" value="" placeholder="Respuesta" autocomplete="off"/>
+        <input type="submit" class="itemNarrow" id="send" value="Comprobar">
+
+    </div>
+</form>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // indicamos que se ejecuta la función a los 5 segundos de haberse
+        // cargado la pagina
+        setTimeout(clickbutton,15000);
+
+        function clickbutton()
+        {
+            // simulamos el click del mouse en el boton del formulario
+            $("#send").click();
+        }
+    });
+</script>

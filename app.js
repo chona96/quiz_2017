@@ -61,3 +61,106 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+/*
+ *--------Streaming de audio simple de bienvenida ------*
+ *
+ *require se usa para "importar" los modulos que vamos a usar con Nodejs
+ *
+ */
+
+var http = require('http'); //Linea para poder usar el protocolo http
+var	fs = require('fs'); // Para abrir archivos del sistema se usa fs
+var path = '/home/chona/Documentos/CORE/53/quiz_2017/audio/WELCOME TO TRIVIAL PURSUIT! (Trivial Pursuit #1).mp3'; //Variable para guardar el path del mp3
+var cancion1 = fs.statSync(path);
+
+http.createServer(function(request, response) {//Levantamos el servidor
+
+    response.writeHead(200, { //Cuando reciba una peticion GET, reponde un codigo 200 y establece conexion
+        'Content-Type': 'audio/mp3', //defino la cabecera como multimedia
+        'Content-Length': cancion1.size //tamaño del tema
+    });
+    fs.createReadStream(path).pipe(response);//Comienza el streaming
+    console.log('Cliente conectado de bienvenida!');
+})
+
+    .listen(2001);//Establecemos el puerto
+console.log("Servidor a la escucha de bienvenida!");
+
+
+/*
+ *--------Streaming de audio simple de inicio ------*
+ *
+ *require se usa para "importar" los modulos que vamos a usar con Nodejs
+ *
+ */
+
+var http = require('http'); //Linea para poder usar el protocolo http
+var	fs = require('fs'); // Para abrir archivos del sistema se usa fs
+var path1 = '/home/chona/Documentos/CORE/53/quiz_2017/audio/inicio.mp3'; //Variable para guardar el path del mp3
+var cancion = fs.statSync(path1);
+
+http.createServer(function(request, response) {//Levantamos el servidor
+
+    response.writeHead(200, { //Cuando reciba una peticion GET, reponde un codigo 200 y establece conexion
+        'Content-Type': 'audio/mp3', //defino la cabecera como multimedia
+        'Content-Length': cancion.size //tamaño del tema
+    });
+    fs.createReadStream(path1).pipe(response);//Comienza el streaming
+    console.log('Cliente conectado y jugando!');
+})
+
+    .listen(8000);//Establecemos el puerto
+console.log("Servidor a la escucha de jugar!");
+
+
+
+/*
+ *--------Streaming de audio simple de preguntas------*
+ *
+ *require se usa para "importar" los modulos que vamos a usar con Nodejs
+ *
+ */
+var http = require('http'); //Linea para poder usar el protocolo http
+var	fs = require('fs'); // Para abrir archivos del sistema se usa fs
+var path2 = '/home/chona/Documentos/CORE/53/quiz_2017/audio/LEADING EVERYONE TO VICTORY! (Trivial Pursuit Live PS4 w Ze, Chilled, GaLm, & Smarty).mp3'; //Variable para guardar el path del mp3
+var cancion2 = fs.statSync(path2);
+
+http.createServer(function(request, response) {//Levantamos el servidor
+
+    response.writeHead(200, { //Cuando reciba una peticion GET, reponde un codigo 200 y establece conexion
+        'Content-Type': 'audio/mp3', //defino la cabecera como multimedia
+        'Content-Length': cancion.size //tamaño del tema
+    });
+    fs.createReadStream(path2).pipe(response);//Comienza el streaming
+    console.log('Cliente conectado y jugando!');
+})
+
+    .listen(8001);//Establecemos el puerto
+console.log("Servidor a la escucha de jugar!");
+
+
+/*
+ *--------Streaming de audio simple de preguntas------*
+ *
+ *require se usa para "importar" los modulos que vamos a usar con Nodejs
+ *
+ */
+var http = require('http'); //Linea para poder usar el protocolo http
+var	fs = require('fs'); // Para abrir archivos del sistema se usa fs
+var path3 = '/home/chona/Documentos/CORE/53/quiz_2017/audio/misc198.mp3'; //Variable para guardar el path del mp3
+var cancion3 = fs.statSync(path3);
+
+http.createServer(function(request, response) {//Levantamos el servidor
+
+    response.writeHead(200, { //Cuando reciba una peticion GET, reponde un codigo 200 y establece conexion
+        'Content-Type': 'audio/mp3', //defino la cabecera como multimedia
+        'Content-Length': cancion.size //tamaño del tema
+    });
+    fs.createReadStream(path3).pipe(response);//Comienza el streaming
+    console.log('Cliente conectado y jugando!');
+})
+
+    .listen(8002);//Establecemos el puerto
+console.log("Servidor a la escucha de jugar!");
